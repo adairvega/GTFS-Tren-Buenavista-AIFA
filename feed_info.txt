@@ -1,0 +1,2 @@
+feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version
+Ferrocarriles Suburbanos S.A.P.I. de C.V.,https://fsuburbanos.com/,es,20260427,20261231,1.0.0

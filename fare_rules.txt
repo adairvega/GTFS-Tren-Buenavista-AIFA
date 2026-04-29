@@ -1,0 +1,4 @@
+fare_id,route_id,origin_id,destination_id
+fare_intermediate,manual-1770916792369,1,1
+fare_aifa,manual-1770916792369,1,2
+fare_aifa,manual-1770916792369,2,1
