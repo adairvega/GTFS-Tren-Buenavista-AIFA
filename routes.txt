@@ -1,2 +1,2 @@
 route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color,route_url
-manual-1770916792369,agency-1770916163482,TFA,Tren Felipe Ángeles Buenavista-AIFA,2,5d2c26,FFFFFF,https://fsuburbanos.com/
+manual-1770916792369,agency-1770916163482,TFA,Tren Felipe Ángeles Buenavista-AIFA,2,5d2c26,FFFFFF,
