@@ -236,53 +236,61 @@ class TransitMapApp {
                 fareInfo = intermediateFare ? `${intermediateFare.price.toFixed(2)} ${intermediateFare.currency}` : '';
             }
 
-            // Get next trains
-            const nextTrains = this.getNextTrains(index);
-
             // Create marker
             const marker = L.marker([stop.lat, stop.lon], { icon: icon }).addTo(this.map);
 
-            // Create popup
-            let nextTrainInfo = '';
-            if (nextTrains && nextTrains.length > 0) {
-                nextTrainInfo = '<div class="popup-next-trains">';
-                nextTrainInfo += '<div class="popup-section-title">🕐 Próximos trenes</div>';
-                nextTrainInfo += '<div class="popup-schedule-note">Horarios programados</div>';
+            // Function to generate popup content with updated train times
+            const generatePopupContent = () => {
+                // Get next trains (recalculated each time)
+                const nextTrains = this.getNextTrains(index);
                 
-                nextTrains.forEach(train => {
-                    const timeLabel = train.minutesUntil < 60 
-                        ? `en ${train.minutesUntil} min` 
-                        : `a las ${train.time}`;
+                let nextTrainInfo = '';
+                if (nextTrains && nextTrains.length > 0) {
+                    nextTrainInfo = '<div class="popup-next-trains">';
+                    nextTrainInfo += '<div class="popup-section-title">🕐 Próximos trenes</div>';
+                    nextTrainInfo += '<div class="popup-schedule-note">Horarios programados • Actualizado justo ahora</div>';
                     
-                    nextTrainInfo += `
-                        <div class="popup-train-item">
-                            <span class="popup-train-time">${train.time}</span>
-                            <span class="popup-train-eta">${timeLabel}</span>
-                            <span class="popup-train-direction">${train.direction}</span>
-                        </div>
-                    `;
-                });
-                
-                nextTrainInfo += '</div>';
-            }
+                    nextTrains.forEach(train => {
+                        const timeLabel = train.minutesUntil < 60 
+                            ? `en ${train.minutesUntil} min` 
+                            : `a las ${train.time}`;
+                        
+                        nextTrainInfo += `
+                            <div class="popup-train-item">
+                                <span class="popup-train-time">${train.time}</span>
+                                <span class="popup-train-eta">${timeLabel}</span>
+                                <span class="popup-train-direction">${train.direction}</span>
+                            </div>
+                        `;
+                    });
+                    
+                    nextTrainInfo += '</div>';
+                }
 
-            const popupContent = `
-                <div class="station-popup">
-                    <div class="popup-station-name">${stop.name}</div>
-                    <div class="popup-station-meta">Estación ${index + 1} de ${stops.length}</div>
-                    ${nextTrainInfo}
-                    ${fareInfo ? `
-                        <div class="popup-fare-info">
-                            <span class="popup-fare-label">Tarifa:</span>
-                            <span class="popup-fare-value">$${fareInfo}</span>
-                        </div>
-                    ` : ''}
-                </div>
-            `;
+                return `
+                    <div class="station-popup">
+                        <div class="popup-station-name">${stop.name}</div>
+                        <div class="popup-station-meta">Estación ${index + 1} de ${stops.length}</div>
+                        ${nextTrainInfo}
+                        ${fareInfo ? `
+                            <div class="popup-fare-info">
+                                <span class="popup-fare-label">Tarifa:</span>
+                                <span class="popup-fare-value">$${fareInfo}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            };
 
-            marker.bindPopup(popupContent, {
+            // Bind popup with initial content
+            marker.bindPopup(generatePopupContent(), {
                 className: 'custom-popup',
                 maxWidth: 300
+            });
+
+            // Update popup content every time it opens
+            marker.on('popupopen', () => {
+                marker.setPopupContent(generatePopupContent());
             });
 
             this.layers.stops.push(marker);
