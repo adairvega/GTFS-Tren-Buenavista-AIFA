@@ -7,6 +7,19 @@ Feed GTFS no oficial del **Tren Felipe Ángeles**, servicio ferroviario que cone
 
 ![alt text](image.png)
 
+## 🌐 Visualizador Web
+
+Visualiza los datos GTFS en un mapa interactivo:
+
+**[Ver Mapa Interactivo](https://adairvega.github.io/GTFS-Tren-Buenavista-AIFA/)** _(Reemplaza con tu URL de GitHub Pages)_
+
+El sitio web incluye:
+- 🗺️ Mapa interactivo con todas las estaciones y rutas
+- 🚉 Información detallada de cada estación
+- 🕐 Horarios de servicio actualizados
+- 💳 Tarifas vigentes
+- 📊 Datos cargados dinámicamente desde los archivos GTFS
+
 ## 📋 Información del Servicio
 
 - **Operador**: Banco Nacional de Obras y Servicios Públicos, S.N.C. (Banobras/Fonadin)
@@ -105,7 +118,53 @@ git clone https://github.com/adairvega/GTFS-Tren-Buenavista-AIFA.git
 wget https://github.com/adairvega/GTFS-Tren-Buenavista-AIFA/archive/refs/heads/main.zip
 ```
 
-## 📊 Especificaciones Técnicas
+## � Estructura del Proyecto
+
+```
+GTFS-Tren-Buenavista-AIFA/
+├── gtfs/                    # Archivos GTFS (datos de transporte)
+│   ├── agency.txt
+│   ├── calendar.txt
+│   ├── fare_attributes.txt
+│   ├── fare_rules.txt
+│   ├── feed_info.txt
+│   ├── frequencies.txt
+│   ├── routes.txt
+│   ├── shapes.txt
+│   ├── stops.txt
+│   ├── stop_times.txt
+│   └── trips.txt
+├── css/                     # Estilos del sitio web
+│   └── style.css
+├── js/                      # JavaScript del sitio web
+│   ├── gtfs-parser.js      # Parser de archivos GTFS
+│   └── map.js              # Lógica del mapa interactivo
+├── index.html              # Página principal del visualizador
+├── README.md               # Este archivo
+└── LICENSE                 # Licencia MIT
+
+```
+
+### Desarrollo Local del Visualizador Web
+
+Para ejecutar el sitio web localmente:
+
+```bash
+# Opción 1: Python
+python -m http.server 8000
+
+# Opción 2: Node.js (npx)
+npx http-server
+
+# Opción 3: PHP
+php -S localhost:8000
+
+# Luego abre: http://localhost:8000
+```
+
+**Nota**: El sitio requiere un servidor local porque utiliza `fetch()` para cargar los archivos GTFS. No funcionará abriendo el archivo HTML directamente.
+
+## �📊 Especificaciones Técnicas
 
 - **Formato**: GTFS (General Transit Feed Specification)
 - **Versión GTFS**: Static v2.0
@@ -114,6 +173,79 @@ wget https://github.com/adairvega/GTFS-Tren-Buenavista-AIFA/archive/refs/heads/m
 - **Zona Horaria**: America/Mexico_City
 - **Idioma**: Español (es)
 - **Vigencia**: 27 de abril - 27 de mayo de 2026
+
+## ✨ Características del Visualizador Web
+
+### 🎯 Mejores Prácticas Implementadas
+
+#### SEO y Descubrimiento
+- ✅ Meta tags completos (descripción, keywords, author)
+- ✅ Open Graph para redes sociales (Facebook, LinkedIn)
+- ✅ Twitter Cards para compartir en Twitter/X
+- ✅ Structured Data (JSON-LD) para búsqueda semántica
+- ✅ Sitemap.xml para indexación
+- ✅ Robots.txt configurado
+- ✅ URLs canónicas
+
+#### Performance y Optimización
+- ✅ Preconnect a dominios externos
+- ✅ DNS prefetch para recursos críticos
+- ✅ Subresource Integrity (SRI) en scripts externos
+- ✅ Scripts con defer para carga asíncrona
+- ✅ Lazy loading de recursos
+- ✅ CSS optimizado con variables
+
+#### Accesibilidad (WCAG 2.1)
+- ✅ ARIA labels en componentes interactivos
+- ✅ Roles semánticos (banner, main, complementary)
+- ✅ Contraste de colores adecuado
+- ✅ Navegación por teclado
+- ✅ Indicadores de foco visibles
+- ✅ Soporte para reducción de movimiento
+- ✅ Soporte para alto contraste
+- ✅ Textos alternativos
+
+#### Progressive Web App (PWA)
+- ✅ Manifest.json configurado
+- ✅ Theme colors para móvil
+- ✅ Soporte para instalación
+- ✅ Iconos adaptativos
+- ✅ Service Worker listo (comentado)
+
+#### Experiencia de Usuario
+- ✅ Diseño responsive (móvil, tablet, desktop)
+- ✅ Modo claro/oscuro con vista satélite
+- ✅ Cálculo de próximos trenes en tiempo real
+- ✅ Popups informativos en estaciones
+- ✅ Control de capas del mapa
+- ✅ Indicadores de carga
+- ✅ Manejo de errores graceful
+
+#### Seguridad
+- ✅ HTTPS only (GitHub Pages)
+- ✅ rel="noopener" en enlaces externos
+- ✅ Validación de datos GTFS
+- ✅ Sin cookies de terceros
+- ✅ Sin tracking
+- ✅ Política de seguridad (SECURITY.md)
+
+### 🛠️ Stack Tecnológico
+
+- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
+- **Mapa**: Leaflet.js 1.9.4
+- **Datos**: GTFS estático (CSV parsing)
+- **Tiles**: CARTO Dark Matter + Esri Satellite
+- **Tipografía**: Inter (Google Fonts)
+- **Hosting**: GitHub Pages
+- **CI/CD**: GitHub Actions (disponible)
+
+### 📱 Compatibilidad
+
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+- Opera 76+
+- Móviles: iOS 14+, Android 10+
 
 ## 🔄 Actualizaciones
 

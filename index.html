@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Mapa interactivo del Tren Felipe Ángeles (TFA) - Ruta Buenavista - AIFA. Visualiza estaciones, horarios y tarifas en tiempo real desde datos GTFS.">
+    <meta name="keywords" content="Tren Felipe Ángeles, TFA, AIFA, Buenavista, GTFS, mapa interactivo, transporte público México">
+    <meta name="author" content="GTFS Transit Viewer">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://adairvega.github.io/GTFS-Tren-Buenavista-AIFA/">
+    
+    <!-- Open Graph Meta Tags (Facebook, LinkedIn) -->
+    <meta property="og:title" content="Tren Felipe Ángeles — Mapa Interactivo">
+    <meta property="og:description" content="Visualiza en tiempo real las estaciones, horarios y rutas del Tren Felipe Ángeles (Buenavista - AIFA). Datos GTFS actualizados.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://adairvega.github.io/GTFS-Tren-Buenavista-AIFA/">
+    <meta property="og:image" content="https://adairvega.github.io/GTFS-Tren-Buenavista-AIFA/image.png">
+    <meta property="og:locale" content="es_MX">
+    <meta property="og:site_name" content="Tren Felipe Ángeles - Mapa GTFS">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tren Felipe Ángeles — Mapa Interactivo">
+    <meta name="twitter:description" content="Visualiza estaciones, horarios y rutas del TFA. Datos GTFS en tiempo real.">
+    <meta name="twitter:image" content="https://adairvega.github.io/GTFS-Tren-Buenavista-AIFA/image.png">
+    <meta name="twitter:creator" content="@adair_vega">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🚆%3C/text%3E%3C/svg%3E">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#0a0e27">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TFA Mapa">
+    <link rel="manifest" href="manifest.json">
+    
+    <title>Tren Felipe Ángeles — Buenavista ↔ AIFA | Mapa Interactivo GTFS</title>
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://server.arcgisonline.com">
+    <link rel="dns-prefetch" href="https://basemaps.cartocdn.com">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Structured Data (JSON-LD) for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Mapa Interactivo Tren Felipe Ángeles",
+        "description": "Visualizador de datos GTFS del Tren Felipe Ángeles con mapa interactivo, horarios y estaciones.",
+        "url": "https://adairvega.github.io/GTFS-Tren-Buenavista-AIFA/",
+        "applicationCategory": "TravelApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Adair Vega",
+            "url": "https://github.com/adairvega"
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen" role="alert" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <p id="loading-text" class="loading-text">Cargando datos GTFS...</p>
+    </div>
+
+    <!-- Header -->
+    <header role="banner">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="logo">🚆</div>
+                <div class="title-group">
+                    <h1 id="agency-name">Tren Felipe Ángeles</h1>
+                    <p class="subtitle" id="route-name">Buenavista ↔ AIFA</p>
+                </div>
+            </div>
+            <div class="header-badges">
+                <div class="badge">
+                    <span class="badge-icon">🚄</span>
+                    <span>Línea TFA</span>
+                </div>
+                <div class="badge">
+                    <span class="badge-icon">📍</span>
+                    <span>12 Estaciones</span>
+                </div>
+                <div class="badge">
+                    <span class="badge-icon">📊</span>
+                    <span>Datos GTFS</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container" role="main">
+        <!-- Map -->
+        <div class="map-container" role="application" aria-label="Mapa interactivo del Tren Felipe Ángeles">
+            <div id="map" aria-label="Visualización del mapa"></div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" role="complementary" aria-label="Información de estaciones y horarios">
+            <!-- Agency Info Section -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">🏢</span>
+                    <h2 class="section-title">Información de la Agencia</h2>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <p><strong id="agency-name">Tren Felipe Ángeles</strong></p>
+                        <p class="text-muted mt-1">Sistema de transporte ferroviario que conecta el centro de la Ciudad de México con el Aeropuerto Internacional Felipe Ángeles.</p>
+                        <p class="mt-1">
+                            <a href="https://aifa.aero/conectividad/suburbano" id="agency-url" class="link" target="_blank" rel="noopener">
+                                Sitio oficial
+                                <span>→</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stations Section -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">🚉</span>
+                    <h2 class="section-title">Estaciones</h2>
+                </div>
+                <ul id="stops-list" class="station-list">
+                    <!-- Stations will be dynamically populated -->
+                </ul>
+            </div>
+
+            <!-- Schedule Section -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">🕐</span>
+                    <h2 class="section-title">Horarios</h2>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div id="schedule-grid" class="schedule-grid">
+                            <!-- Schedule will be dynamically populated -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fares Section -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">💳</span>
+                    <h2 class="section-title">Tarifas</h2>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <table class="fare-table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo de Tarifa</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fare-table-body">
+                                <!-- Fares will be dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GTFS Info Section -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">📦</span>
+                    <h2 class="section-title">Datos Abiertos</h2>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <p>Este sitio visualiza datos en formato GTFS (General Transit Feed Specification), el estándar internacional para información de transporte público.</p>
+                        <p class="mt-2">
+                            <a href="https://github.com/adairvega/GTFS-Tren-Buenavista-AIFA" class="link" target="_blank" rel="noopener">
+                                <span>📁</span>
+                                Ver repositorio en GitHub
+                                <span>→</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Footer -->
+    <footer role="contentinfo" class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <p class="footer-version">
+                    <strong>Versión 1.0.0</strong> • Actualizado: Mayo 2026
+                </p>
+                <p class="footer-note">
+                    Los horarios mostrados son programados y pueden variar. Para información oficial, consulta 
+                    <a href="https://x.com/TrenAIFA" target="_blank" rel="noopener" class="footer-link">@TrenAIFA</a>.
+                </p>
+            </div>
+            <div class="footer-section">
+                <p class="footer-credits">
+                    Feed GTFS no oficial • 
+                    <a href="https://github.com/adairvega/GTFS-Tren-Buenavista-AIFA" target="_blank" rel="noopener" class="footer-link">GitHub</a> • 
+                    Creado con <span aria-label="amor">❤️</span> por 
+                    <a href="https://x.com/adair_vega" target="_blank" rel="noopener" class="footer-link">@adair_vega</a>
+                </p>
+                <p class="footer-tech">
+                    Tecnologías: <a href="https://gtfs.org" target="_blank" rel="noopener" class="footer-link">GTFS</a> • 
+                    <a href="https://leafletjs.com" target="_blank" rel="noopener" class="footer-link">Leaflet.js</a> • 
+                    Open Data
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+    <script src="js/gtfs-parser.js" defer></script>
+    <script src="js/map.js" defer></script>
+    
+    <!-- Error Handler -->
+    <script>
+        window.addEventListener('error', function(e) {
+            console.error('Error global:', e.error);
+            const loadingScreen = document.getElementById('loading-screen');
+            const loadingText = document.getElementById('loading-text');
+            if (loadingScreen && loadingText) {
+                loadingText.textContent = '⚠️ Error al cargar. Por favor, recarga la página.';
+            }
+        });
+        
+        // Service Worker Registration
+        /*
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker registrado'))
+                    .catch(err => console.log('Service Worker no registrado', err));
+            });
+        }
+        */
+    </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Archivos de datos GTFS
+Disallow: /gtfs/
+
+# Sitemap
+Sitemap: https://adairvega.github.io/GTFS-Tren-Buenavista-AIFA/sitemap.xml
+
+# Crawl delay (opcional)
+Crawl-delay: 1
