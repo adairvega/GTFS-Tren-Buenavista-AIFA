@@ -252,7 +252,7 @@ class TransitMapApp {
                     
                     nextTrains.forEach(train => {
                         const timeLabel = train.minutesUntil < 60 
-                            ? `en ${train.minutesUntil} min` 
+                            ? train.minutesUntil == 0 ? 'Ahora' : `en ${train.minutesUntil} min` 
                             : `a las ${train.time}`;
                         
                         nextTrainInfo += `
